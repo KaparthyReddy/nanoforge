@@ -50,4 +50,4 @@ def masked_fill(x, mask, value):
     return out
 
 
-__all__ = ["Tensor", "softmax", "log_softmax", "gelu", "masked_fill"]
+__all__ = ["Tensor", "gelu", "log_softmax", "masked_fill", "softmax"]

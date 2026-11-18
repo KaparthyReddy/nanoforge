@@ -4,7 +4,7 @@ import math
 
 
 class Value:
-    __slots__ = ("data", "grad", "_prev", "_backward", "_op", "label")
+    __slots__ = ("_backward", "_op", "_prev", "data", "grad", "label")
 
     def __init__(self, data, _children=(), _op="", label=""):
         self.data = float(data)

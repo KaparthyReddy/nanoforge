@@ -4,10 +4,10 @@ from .tensor import Tensor, unbroadcast
 
 __all__ = [
     "Tensor",
-    "unbroadcast",
-    "gradcheck",
-    "softmax",
-    "log_softmax",
     "gelu",
+    "gradcheck",
+    "log_softmax",
     "masked_fill",
+    "softmax",
+    "unbroadcast",
 ]
