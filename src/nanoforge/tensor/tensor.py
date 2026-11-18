@@ -38,7 +38,7 @@ def _norm_index(idx):
 
 
 class Tensor:
-    __slots__ = ("data", "grad", "requires_grad", "_prev", "_backward", "_op")
+    __slots__ = ("_backward", "_op", "_prev", "data", "grad", "requires_grad")
     __array_priority__ = 1000
 
     def __init__(self, data, requires_grad=False, _children=(), _op=""):
@@ -277,8 +277,9 @@ class Tensor:
             visited.add(id(node))
             stack.append((node, True))
             for child in node._prev:
-                if id(child) not in visited:
+                if child.requires_grad and id(child) not in visited:
                     stack.append((child, False))
         self.grad = grad
         for node in reversed(topo):
-            node._backward()
+            if node.grad is not None:
+                node._backward()
