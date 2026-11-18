@@ -11,6 +11,9 @@ def r(*shape):
 
 
 W35 = r(3, 5)
+C46 = r(4, 6)
+C423 = r(4, 2, 3)
+C243 = r(2, 4, 3)
 
 
 def test_add_broadcast():
@@ -28,6 +31,11 @@ def test_sub_neg_pow():
 
 def test_rtruediv():
     assert gradcheck(lambda a: (1.0 / (a * a + 1.0)).sum(), r(2, 3))
+
+
+def test_constant_ops_do_not_break_backward():
+    assert gradcheck(lambda a: (a / 2.0 - 3.0).sum(), r(2, 3))
+    assert gradcheck(lambda a: (a - np.ones((2, 3))).sum(), r(2, 3))
 
 
 def test_matmul_2d():
@@ -54,9 +62,9 @@ def test_unary():
 
 
 def test_reshape_transpose():
-    assert gradcheck(lambda a: (a.reshape(6, 4).T * Tensor(r(4, 6))).tanh().sum(), r(2, 3, 4))
-    assert gradcheck(lambda a: (a.transpose(2, 0, 1) * Tensor(r(4, 2, 3))).sum(), r(2, 3, 4))
-    assert gradcheck(lambda a: (a.swapaxes(1, 2) ** 2 * Tensor(r(2, 4, 3))).sum(), r(2, 3, 4))
+    assert gradcheck(lambda a: (a.reshape(6, 4).T * Tensor(C46)).tanh().sum(), r(2, 3, 4))
+    assert gradcheck(lambda a: (a.transpose(2, 0, 1) * Tensor(C423)).sum(), r(2, 3, 4))
+    assert gradcheck(lambda a: (a.swapaxes(1, 2) ** 2 * Tensor(C243)).sum(), r(2, 3, 4))
 
 
 def test_getitem():
